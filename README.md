@@ -10,19 +10,23 @@
 6. Insert below script in your template at the bottom. Inside `<body>` tag:
 ```html
 <script>
-    var scriptContent = $('.resultItemsWrapper').children('script').html();
-    eval('window.'+ /(PageClick_)([0-9]+)/g.exec(scriptContent)[0] +' = function () {}');
+  /**
+   * Avoid VTEX animation
+   */
+  function goToTopPage() { }
 
-    /**
-     * Avoid VTEX animation
-     */
-    function goToTopPage() {}
+  var $childrenResult = $('.resultItemsWrapper').children('script')
+
+  if ($childrenResult.length !== 0) {
+    var scriptContent = $childrenResult.html();
+    eval('window.' + /(PageClick_)([0-9]+)/g.exec(scriptContent)[0] + ' = function () {}');
+  }
 </script>
 ```
 7. Call plugin in your JavaScript:
 ```javascript
 (function() {
-    $('.resultItemsWrapper div[id^="ResultItems"]').avantiSearch();
+  $('.resultItemsWrapper div[id^="ResultItems"]').avantiSearch();
 })();
 ```
 
@@ -80,14 +84,14 @@
 
 ```javascript
 (function() {
-    $('.resultItemsWrapper div[id^="ResultItems"]').avantiSearch({
-        cookieName: 'AvantiSearchQuery',
-        defaultParams: {
-            'query': {
-                'O': 'OrderByPriceASC'
-            }
-        }
-    });
+  $('.resultItemsWrapper div[id^="ResultItems"]').avantiSearch({
+    cookieName: 'AvantiSearchQuery',
+    defaultParams: {
+      'query': {
+        'O': 'OrderByPriceASC'
+      }
+    }
+  });
 })();
 ```
 
@@ -96,7 +100,6 @@
 | Event name | Arguments
 |--- |--- |
 | avantisearch.init | event, options, request
-| avantisearch.emptySearch | event, options (Note: this event is triggered at `body`)
 | avantisearch.initWithCookie | event, options, request
 | avantisearch.initWithoutCookie | event, options, request
 | avantisearch.beforeSearch | event, options, request
@@ -113,16 +116,16 @@
 **Example:**
 ```javascript
 (function() {
-    var $resultItems = $('.resultItemsWrapper div[id^="ResultItems"]');
+  var $resultItems = $('.resultItemsWrapper div[id^="ResultItems"]');
 
-    $resultItems
-        .on('avantisearch.init', function (event, options, request) {
-            console.log(event);
-            console.log(options);
-            console.log(request);
-        });
+  $resultItems
+    .on('avantisearch.init', function (event, options, request) {
+      console.log(event);
+      console.log(options);
+      console.log(request);
+    });
 
-    $resultItems.avantiSearch();
+  $resultItems.avantiSearch();
 })();
 ```
 
