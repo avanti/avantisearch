@@ -27,6 +27,13 @@
       var self = this;
 
       self.request = self._setRequest();
+
+      if (self.request === false) {
+        $('body').trigger('avantisearch.emptySearch', [ self.options ]);
+
+        return false;
+      }
+
       self._concatRequest();
       self._setPaginationInfo();
 
@@ -741,11 +748,19 @@
 
       var requestUrl = self._getRequestUrl();
 
+      if (requestUrl === false) {
+        return false
+      }
+
       return self._splitRequestUrl(requestUrl);
     },
 
     _getRequestUrl: function () {
       var self = this;
+
+      if (self.options.$script.length === 0) {
+        return false;
+      }
 
       var scriptContent = self.options.$script.html();
       var pattern = /\/buscapagina\?.+&PageNumber=/gi;
