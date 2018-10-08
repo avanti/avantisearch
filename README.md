@@ -96,6 +96,7 @@
 | Event name | Arguments
 |--- |--- |
 | avantisearch.init | event, options, request
+| avantisearch.emptySearch | event, options (Note: this event is triggered at `body`)
 | avantisearch.initWithCookie | event, options, request
 | avantisearch.initWithoutCookie | event, options, request
 | avantisearch.beforeSearch | event, options, request
